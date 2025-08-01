@@ -4,6 +4,7 @@ from tkinter import filedialog, messagebox, ttk
 from PIL import Image
 from pillow_heif import register_heif_opener
 from pathlib import Path
+import time
 
 register_heif_opener()
 
@@ -15,10 +16,8 @@ def convert_image(input_path, output_format, output_dir):
         image = Image.open(input_path)
         base_name = os.path.splitext(os.path.basename(input_path))[0]
         output_file = os.path.join(output_dir, f"{base_name}.{output_format.lower()}")
-
-        if output_format.upper() in ['JPEG', 'JPG'] and image.mode in ('RGBA', 'LA'):
-            image = image.convert('RGB')  # Strip alpha channel for JPEG
-
+        if output_format.upper() in ['JPEG', 'JPG'] and image.mode == 'RGBA':
+            image = image.convert('RGB')
         image.save(output_file, output_format)
         return output_file
     except Exception as e:
@@ -84,6 +83,10 @@ class ImageConverterApp:
         self.result_box = tk.Text(root, height=10, wrap=tk.WORD)
         self.result_box.grid(row=7, column=0, columnspan=3, padx=10, pady=10, sticky="nsew")
 
+        # Time taken label
+        self.time_label = tk.Label(root, text="")
+        self.time_label.grid(row=8, column=0, columnspan=3, padx=10, pady=(0, 10), sticky="ew")
+
     def add_files(self):
         new_files = filedialog.askopenfilenames(title="Select Image Files")
         for file in new_files:
@@ -119,9 +122,12 @@ class ImageConverterApp:
     def convert_images(self):
         output_format = self.format_var.get()
         self.result_box.delete(1.0, tk.END)
+        self.time_label.config(text="")
         if not self.files:
             messagebox.showwarning("No files", "Please add some image files to convert.")
             return
+
+        start_time = time.time()
 
         for file_path in self.files:
             result = convert_image(file_path, output_format, self.output_dir)
@@ -129,6 +135,10 @@ class ImageConverterApp:
                 self.result_box.insert(tk.END, f"✔ Converted: {os.path.basename(result)}\n")
             else:
                 self.result_box.insert(tk.END, f"✘ Failed: {file_path}\nReason: {result}\n")
+
+        end_time = time.time()
+        duration = end_time - start_time
+        self.time_label.config(text=f"Conversion completed in {duration:.2f} seconds.")
 
 if __name__ == '__main__':
     root = tk.Tk()
