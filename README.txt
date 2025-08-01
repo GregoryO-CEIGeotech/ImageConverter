@@ -1,7 +1,7 @@
 INSTRUCTIONS
 ____________
 (The following instructions are for initial setup, if you've already done this, go to Step 7.)
-(If your computer lets you use the app found in ImageConverter > dist > "converter_gui", disregard all steps)
+(If your computer lets you use the app found in ImageConverter > dist > "ImageConverter", disregard all steps)
 
 1. Go to Microsoft Store
 2. In the search bar, type "Python 3.11", then choose the option below the search option (should have the symbol of a blue and yellow snake).
