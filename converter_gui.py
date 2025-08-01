@@ -7,7 +7,7 @@ from pathlib import Path
 
 register_heif_opener()
 
-SUPPORTED_FORMATS = ['JPEG', 'JPG', 'PNG', 'BMP', 'TIFF', 'WEBP', 'ICO', 'GIF', 'PPM', 'TGA']
+SUPPORTED_FORMATS = ['JPEG', 'JPG', 'PNG', 'WEBP', 'GIF', 'BMP', 'ICO', 'TIFF', 'PPM', 'TGA']
 
 # Function to convert a single image file
 def convert_image(input_path, output_format, output_dir):
